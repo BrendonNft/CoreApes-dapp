@@ -255,6 +255,31 @@ function App() {
       });
   };
 
+  const mintEmperor = () => {
+    let gasLimit = CONFIG.GAS_LIMIT;
+    let totalGasLimit = String(gasLimit);
+    console.log("Gas limit: ", totalGasLimit);
+    setFeedback(`mint processing...`);
+    blockchain.smartContract.methods
+      .bet()
+      .send({
+        gasLimit: String(totalGasLimit),
+        to: CONFIG.CONTRACT_ADDRESS,
+        from: blockchain.account,
+      })
+      .once("error", (err) => {
+        console.log(err);
+        setFeedback("Sorry, something went wrong please try again later.");
+      })
+      .then((receipt) => {
+        console.log(receipt);
+        setFeedback(
+          `mint successful ✔️`
+        );
+        dispatch(fetchData(blockchain.account));
+      });
+  };
+
   const decrementTokenId = () => {
     let newTokenId = tokenId - 1;
     if (newTokenId < 1) {
@@ -373,8 +398,17 @@ function App() {
                 color: "var(--accent-text)",
               }}
             >
-              {data.Sale}
+              {data.Supply}
             </s.TextTitle>
+                    <s.SpacerMedium />
+                      <s.TextDescription
+                        style={{
+                          textAlign: "center",
+                          color: "var(--accent-text)",
+                        }}
+                      >
+                        totalSupply
+                      </s.TextDescription>
                 <s.SpacerSmall />
             <s.TextDescription
               style={{
@@ -387,7 +421,7 @@ function App() {
               </StyledLink>
             </s.TextDescription>
             <s.SpacerSmall />
-            {Number(data.Supply) >= CONFIG.MAX_SUPPLY ? (
+            {Number(data.Sales) >= CONFIG.MAX_SUPPLY ? (
               <>
                 <s.TextTitle
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
@@ -409,7 +443,7 @@ function App() {
                 <s.TextTitle
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  MINT AND STAKE CAPE
+                  1 COREAPE costs 5 EMPEROR.
                 </s.TextTitle>
                 <s.SpacerXSmall />
                 <s.TextDescription
@@ -535,7 +569,16 @@ function App() {
                       >
                         UNSTAKEALL
                       </StyledButton>
-                      </s.Container>
+                      </s.Container>  
+                    <s.SpacerSmall />
+                      <StyledButton
+                        onClick={(e) => {
+                         mintEmperor();
+                          getData();
+                        }}
+                      >
+                        MINT
+                      </StyledButton>
                       <s.SpacerSmall />
                       <StyledButton
                         onClick={(e) => {

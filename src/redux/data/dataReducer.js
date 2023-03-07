@@ -19,7 +19,7 @@ const dataReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        Supply: action.payload.Supply,
+        Supply: action.payload.Supply(),
         // cost: action.payload.cost,
         error: false,
         errorMsg: "",

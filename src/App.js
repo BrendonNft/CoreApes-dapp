@@ -400,7 +400,7 @@ function App() {
             >
               {data.Supply}
             </s.TextTitle>
-                    <s.SpacerMedium />
+                    <s.SpacerSmall />
                       <s.TextDescription
                         style={{
                           textAlign: "center",

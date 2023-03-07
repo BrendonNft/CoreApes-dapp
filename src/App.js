@@ -261,7 +261,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`mint processing...`);
     blockchain.smartContract.methods
-      .bet()
+      .mint()
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -400,7 +400,6 @@ function App() {
             >
               {data.Supply}
             </s.TextTitle>
-                    <s.SpacerSmall />
                       <s.TextDescription
                         style={{
                           textAlign: "center",
@@ -567,7 +566,7 @@ function App() {
                           getData();
                         }}
                       >
-                        UNSTAKEALL
+                        UNSTAKE
                       </StyledButton>
                       </s.Container>  
                     <s.SpacerSmall />

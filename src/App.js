@@ -161,7 +161,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`Stake Processing...`);
     blockchain.smartContract.methods
-      .stake(stakeAmount)
+      .stake(tokenId)
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -186,7 +186,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`unstaking processing...`);
     blockchain.smartContract.methods
-      .withdraw()
+      .withdraw(tokenId)
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -211,7 +211,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`claim processing...`);
     blockchain.smartContract.methods
-      .claim()
+      .claimRewards()
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -225,6 +225,31 @@ function App() {
         console.log(receipt);
         setFeedback(
           `claiming successful ✔️`
+        );
+        dispatch(fetchData(blockchain.account));
+      });
+  };
+
+  const betEmperor = () => {
+    let gasLimit = CONFIG.GAS_LIMIT;
+    let totalGasLimit = String(gasLimit);
+    console.log("Gas limit: ", totalGasLimit);
+    setFeedback(`bet processing...`);
+    blockchain.smartContract.methods
+      .bet()
+      .send({
+        gasLimit: String(totalGasLimit),
+        to: CONFIG.CONTRACT_ADDRESS,
+        from: blockchain.account,
+      })
+      .once("error", (err) => {
+        console.log(err);
+        setFeedback("Sorry, something went wrong please try again later.");
+      })
+      .then((receipt) => {
+        console.log(receipt);
+        setFeedback(
+          `bet successful ✔️`
         );
         dispatch(fetchData(blockchain.account));
       });
@@ -384,13 +409,13 @@ function App() {
                 <s.TextTitle
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  EMPEROR POOL STAKING
+                  MINT AND STAKE CAPE
                 </s.TextTitle>
                 <s.SpacerXSmall />
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  stake and earn more emperor
+                  mint with EMPEROR coin.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
@@ -519,6 +544,15 @@ function App() {
                         }}
                       >
                         CLAIM
+                      </StyledButton>
+                      <s.SpacerSmall />
+                      <StyledButton
+                        onClick={(e) => {
+                          betEmperor();
+                          getData();
+                        }}
+                      >
+                        BET
                       </StyledButton>
                       <s.SpacerSmall />
                       <StyledButton

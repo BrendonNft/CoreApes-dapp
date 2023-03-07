@@ -25,9 +25,9 @@ export const fetchData = () => {
   return async (dispatch) => {
     dispatch(fetchDataRequest());
     try {
-      let totalStaked = await store
+      let Supply = await store
         .getState()
-        .blockchain.smartContract.methods.totalStaked()
+        .blockchain.smartContract.methods.Supply()
         .call();
       // let cost = await store
       //   .getState()
@@ -36,7 +36,7 @@ export const fetchData = () => {
 
       dispatch(
         fetchDataSuccess({
-          totalStaked,
+          Supply,
           // cost,
         })
       );

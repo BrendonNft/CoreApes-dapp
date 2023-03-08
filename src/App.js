@@ -269,7 +269,7 @@ function App() {
       })
       .once("error", (err) => {
         console.log(err);
-        setFeedback("Sorry, something went wrong please try again later.");
+        setFeedback("Mint failed ❌. Please get more Emperor Coin.");
       })
       .then((receipt) => {
         console.log(receipt);

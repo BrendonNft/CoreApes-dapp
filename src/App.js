@@ -211,7 +211,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`claim processing...`);
     blockchain.smartContract.methods
-      .claimReward()
+      .claimRewards()
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,

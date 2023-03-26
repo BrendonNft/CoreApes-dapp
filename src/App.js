@@ -261,7 +261,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`mint processing...`);
     blockchain.smartContract.methods
-      .mint(blockchain.account)
+      .min(blockchain.account)
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,

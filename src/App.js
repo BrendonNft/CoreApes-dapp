@@ -104,6 +104,7 @@ function App() {
   const [feedback, setFeedback] = useState(`Approve to proceed.`);
   const [tokenId, setTokenId] = useState(0);
   const [amount, setAmount] = useState(0);
+  const [mintAmount, setMintAmount] = useState(1);
   const [approveAmount, setApproveAmount] = useState(900000000000000000000);
   const [CONFIG, SET_CONFIG] = useState({
     CONTRACT_ADDRESS: "",
@@ -161,7 +162,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`Stake Processing...`);
     blockchain.smartContract.methods
-      .stake(tokenId)
+      .stak(tokenId)
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -211,7 +212,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`claim processing...`);
     blockchain.smartContract.methods
-      .claimRewards()
+      .claimReward()
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -255,7 +256,7 @@ function App() {
       });
   };
 
-  const mintEmperor = () => {
+  const MINTEmperor = () => {
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalGasLimit = String(gasLimit);
     console.log("Gas limit: ", totalGasLimit);
@@ -275,6 +276,35 @@ function App() {
         console.log(receipt);
         setFeedback(
           `mint successful ✔️`
+        );
+        dispatch(fetchData(blockchain.account));
+      });
+  };
+
+  const mintEmperor = () => {
+    let cost = CONFIG.WEI_COST;
+    let gasLimit = CONFIG.GAS_LIMIT;
+    let totalCostWei = String(cost * mintAmount);
+    let totalGasLimit = String(gasLimit * mintAmount);
+    console.log("Cost: ", totalCostWei);
+    console.log("Gas limit: ", totalGasLimit);
+    setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
+    blockchain.smartContract.methods
+      .mint(blockchain.account, mintAmount)
+      .send({
+        gasLimit: String(totalGasLimit),
+        to: CONFIG.CONTRACT_ADDRESS,
+        from: blockchain.account,
+        value: totalCostWei,
+      })
+      .once("error", (err) => {
+        console.log(err);
+        setFeedback("Sorry, something went wrong please try again later.");
+      })
+      .then((receipt) => {
+        console.log(receipt);
+        setFeedback(
+          `WOW, the ${CONFIG.NFT_NAME} is yours!.`
         );
         dispatch(fetchData(blockchain.account));
       });
@@ -398,7 +428,7 @@ function App() {
                 color: "var(--accent-text)",
               }}
             >
-              {data.Supply}
+              {data.Supply} / {CONFIG.MAX_SUPPLY}
             </s.TextTitle>
                       <s.TextDescription
                         style={{
@@ -406,7 +436,7 @@ function App() {
                           color: "var(--accent-text)",
                         }}
                       >
-                        totalSupply
+                        Supply
                       </s.TextDescription>
                 <s.SpacerSmall />
             <s.TextDescription
@@ -442,13 +472,14 @@ function App() {
                 <s.TextTitle
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  1 COREAPE costs 5 EMPEROR.
+                  1 {CONFIG.SYMBOL} costs {CONFIG.DISPLAY_COST}{" "}
+                  {CONFIG.NETWORK.SYMBOL}.
                 </s.TextTitle>
                 <s.SpacerXSmall />
                 <s.TextDescription
                   style={{ textAlign: "center", color: "var(--accent-text)" }}
                 >
-                  mint with EMPEROR coin.
+                  Excluding gas fees.
                 </s.TextDescription>
                 <s.SpacerSmall />
                 {blockchain.account === "" ||
@@ -466,7 +497,7 @@ function App() {
                     <StyledButton
                       onClick={(e) => {
                         e.preventDefault();
-                        dispatch(connect2());
+                        dispatch(connect1());
                         getData();
                       }}
                     >
@@ -586,24 +617,6 @@ function App() {
                         }}
                       >
                         CLAIM
-                      </StyledButton>
-                      <s.SpacerSmall />
-                      <StyledButton
-                        onClick={(e) => {
-                          betEmperor();
-                          getData();
-                        }}
-                      >
-                        BET
-                      </StyledButton>
-                      <s.SpacerSmall />
-                      <StyledButton
-                        onClick={(e) => {
-                          approveStake();
-                          getData();
-                        }}
-                      >
-                        APPROVE
                       </StyledButton>
                   </>
                 )}

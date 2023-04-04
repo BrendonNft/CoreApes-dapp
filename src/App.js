@@ -101,7 +101,7 @@ function App() {
   const blockchain = useSelector((state) => state.blockchain);
   const data = useSelector((state) => state.data);
   const [claimingNft, setClaimingNft] = useState(false);
-  const [feedback, setFeedback] = useState(`Approve to proceed.`);
+  const [feedback, setFeedback] = useState(`Click mint to buy Nft.`);
   const [tokenId, setTokenId] = useState(0);
   const [amount, setAmount] = useState(0);
   const [mintAmount, setMintAmount] = useState(1);

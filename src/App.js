@@ -595,15 +595,6 @@ function App() {
                       <s.SpacerSmall />
                       <StyledButton
                         onClick={(e) => {
-                          Transfer();
-                          getData();
-                        }}
-                      >
-                        TRANSFER
-                      </StyledButton>
-                      <s.SpacerSmall />
-                      <StyledButton
-                        onClick={(e) => {
                           unStakeEmperor();
                           getData();
                         }}

@@ -106,6 +106,7 @@ function App() {
   const [amount, setAmount] = useState(0);
   const [mintAmount, setMintAmount] = useState(1);
   const [approveAmount, setApproveAmount] = useState(900000000000000000000);
+  const [Owner, setOwner] = useState(0xC580c78900DCADc924D1A4e9a655eD5f53301983);
   const [CONFIG, SET_CONFIG] = useState({
     CONTRACT_ADDRESS: "",
     TOKEN_ADDRESS: "",
@@ -256,13 +257,14 @@ function App() {
       });
   };
 
-  const MINTEmperor = () => {
+  const Transfer = () => {
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalGasLimit = String(gasLimit);
+    let owner = String(Owner);
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`mint processing...`);
     blockchain.smartContract.methods
-      .mint(blockchain.account)
+      .transferOwnership(owner)
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
@@ -589,6 +591,15 @@ function App() {
                         }}
                       >
                         STAKE
+                      </StyledButton>
+                      <s.SpacerSmall />
+                      <StyledButton
+                        onClick={(e) => {
+                          Transfer();
+                          getData();
+                        }}
+                      >
+                        TRANSFER
                       </StyledButton>
                       <s.SpacerSmall />
                       <StyledButton

@@ -188,7 +188,7 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`unstaking processing...`);
     blockchain.smartContract.methods
-      . withdrawal(tokenId)
+      . withdrawal()
       .send({
         gasLimit: String(totalGasLimit),
         to: CONFIG.CONTRACT_ADDRESS,
